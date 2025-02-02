@@ -4,7 +4,7 @@ import CodeRender from './components/code-render/CodeRender';
 import styled from 'styled-components';
 import { HEADER_HEIGHT } from './constants/sizes';
 import useEditorContext from './context/hooks/useEditorContext';
-import { editorPlacement } from './constants/editor';
+import { editorPlacement } from './config/editor.config';
 
 const AppWrapper = styled.div`
   height: 100vh;

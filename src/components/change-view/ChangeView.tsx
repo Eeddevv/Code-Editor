@@ -1,7 +1,7 @@
 import { memo } from 'react';
 import styled from 'styled-components';
 import useEditorContext from '../../context/hooks/useEditorContext';
-import { editorPlacement } from '../../constants/editor';
+import { editorPlacement } from '../../config/editor.config';
 
 const Button = styled.button`
   height: 35px;

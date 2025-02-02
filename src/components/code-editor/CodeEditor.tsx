@@ -6,9 +6,10 @@ import { useState, useEffect } from 'react';
 import { RESIZE_WIDTH } from '../../constants/editor';
 import { editorPlacement } from '../../config/editor.config';
 
-const EditorWrapper = styled.div<{ width: string }>`
-  width: ${(props) => props.width};
+const EditorWrapper = styled.div<{ width: number }>`
+  width: ${(props) => props.width}px;
   position: relative;
+  z-index: 1000;
 `;
 
 const ResizeHandle = styled.div<{ placement: editorPlacement }>`
@@ -25,8 +26,8 @@ const ResizeHandle = styled.div<{ placement: editorPlacement }>`
 
 const CodeEditor = () => {
   const { editorConfig, setEditorConfig } = useEditorContext();
+
   const [isResizing, setIsResizing] = useState(false);
-  const [width, setWidth] = useState(editorConfig.width);
 
   const handleMouseDown = () => {
     setIsResizing(true);
@@ -36,21 +37,30 @@ const CodeEditor = () => {
     if (!isResizing) return;
 
     if (editorConfig.placement === editorPlacement.LEFT) {
-      setWidth(`${event.clientX}px`);
+      setEditorConfig({
+        ...editorConfig,
+        width: event.clientX,
+        isResizeNow: true,
+      });
     } else {
-      setWidth(`${window.innerWidth - event.clientX}px`);
+      setEditorConfig({
+        ...editorConfig,
+        width: window.innerWidth - event.clientX,
+        isResizeNow: true,
+      });
     }
   };
 
   const handleMouseUp = (event: MouseEvent) => {
     const correctWidth =
       editorConfig.placement === editorPlacement.LEFT
-        ? `${event.clientX}px`
-        : `${window.innerWidth - event.clientX}px`;
+        ? event.clientX
+        : window.innerWidth - event.clientX;
 
     setEditorConfig({
       ...editorConfig,
       width: correctWidth,
+      isResizeNow: false,
     });
     setIsResizing(false);
   };
@@ -70,7 +80,7 @@ const CodeEditor = () => {
   }, [isResizing]);
 
   return (
-    <EditorWrapper width={width}>
+    <EditorWrapper width={editorConfig.width}>
       <Editor
         theme={editorConfig.theme}
         language={'html'}

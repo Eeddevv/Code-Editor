@@ -13,7 +13,7 @@ const AppWrapper = styled.div`
 
 const Wrapper = styled.div<{ placement: editorPlacement }>`
   display: flex;
-  justify-content: space-between;
+  flex: 0 1 50%;
   flex-direction: ${(props) => (props.placement === editorPlacement.LEFT ? 'row' : 'row-reverse')};
   height: calc(100vh - ${HEADER_HEIGHT}px);
 `;
